@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RestTimeMapper">
+  <resultMap id="BaseResultMap" type="com.model.RestTime">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="break_time" jdbcType="INTEGER" property="breakTime" />
+    <result column="lesson_time" jdbcType="INTEGER" property="lessonTime" />
+    <result column="lesson_one" jdbcType="BIGINT" property="lessonOne" />
+    <result column="lesson_two" jdbcType="BIGINT" property="lessonTwo" />
+    <result column="lesson_three" jdbcType="BIGINT" property="lessonThree" />
+    <result column="lesson_four" jdbcType="BIGINT" property="lessonFour" />
+    <result column="lesson_five" jdbcType="BIGINT" property="lessonFive" />
+    <result column="lesson_six" jdbcType="BIGINT" property="lessonSix" />
+    <result column="lesson_seven" jdbcType="BIGINT" property="lessonSeven" />
+    <result column="lesson_eight" jdbcType="BIGINT" property="lessonEight" />
+    <result column="lesson_nine" jdbcType="BIGINT" property="lessonNine" />
+    <result column="lesson_ten" jdbcType="BIGINT" property="lessonTen" />
+    <result column="lesson_eleven" jdbcType="BIGINT" property="lessonEleven" />
+    <result column="lesson_delay" jdbcType="INTEGER" property="lessonDelay" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, school_id, break_time, lesson_time, lesson_one, lesson_two, lesson_three, lesson_four,
+    lesson_five, lesson_six, lesson_seven, lesson_eight, lesson_nine, lesson_ten, lesson_eleven,
+    lesson_delay
+  </sql>
+</mapper>

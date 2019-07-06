@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="regist_date" jdbcType="BIGINT" property="registDate" />
+    <result column="last_login_date" jdbcType="BIGINT" property="lastLoginDate" />
+    <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="college_id" jdbcType="INTEGER" property="collegeId" />
+  </resultMap>
+  <resultMap id="returnMap" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="school_name" javaType="java.lang.String" property="schoolName"></result>
+    <result column="college_name" javaType="java.lang.String" property="collegeName"></result>
+    <result column="role_name" javaType="java.lang.String" property="roleName"></result>
+    <result column="role_id" javaType="java.lang.Integer" property="roleId"></result>
+    <result column="college_id" javaType="java.lang.Integer" property="collegeId"></result>
+    <result column="school_id" javaType="java.lang.Integer" property="schoolId"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, role_id, image_url, regist_date, last_login_date, passwd, phone, college_id
+  </sql>
+  <select id="selectAllUser" resultMap="returnMap" parameterType="com.model.userdto.UserQuery">
+    SELECT u.id, u.name, u.image_url, u.regist_date, u.last_login_date, u.phone, u.role_id,
+    u.college_id, c.college_name, c.school_id,  s.school_name, r.name as role_name
+    FROM USER u
+    LEFT JOIN college c on c.id = u.college_id
+    LEFT JOIN school s on s.id = c.school_id
+    LEFT JOIN role r on r.id = u.role_id
+    WHERE u.id > 0
+    <if test="id != null">
+      AND u.id = #{id}
+    </if>
+    <if test="name != null">
+      AND u.name like "%"#{name}"%"
+    </if>
+    <if test="roleId != null">
+      AND u.role_id = #{roleId}
+    </if>
+    <if test="phone != null">
+      AND u.phone like "%"#{phone}"%"
+    </if>
+    <if test="collegeName != null">
+      AND s.college_name like "%"#{collegeName}"%"
+    </if>
+    <if test="schoolName != null">
+      AND s.school_name like "%"#{schoolName}"%"
+    </if>
+    <if test="registDateBegin != null">
+      AND u.regist_date &gt;= #{registDateBegin}
+    </if>
+    <if test="registDateEnd != null">
+      AND u.regist_date &lt;= #{registDateEnd}
+    </if>
+  </select>
+</mapper>

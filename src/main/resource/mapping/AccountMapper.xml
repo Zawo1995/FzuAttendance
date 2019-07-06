@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.model.Account">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="login_account" jdbcType="VARCHAR" property="loginAccount" />
+    <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, method, login_account, passwd, user_id
+  </sql>
+  <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+    INSERT  INTO account
+    (method,login_account,passwd,user_id)
+    VALUES
+    <foreach collection="list" item="i" index="index" separator=",">
+      (
+      #{i.method},#{i.loginAccount},#{i.password},#{i.userId}
+      )
+    </foreach>
+  </insert>
+</mapper>

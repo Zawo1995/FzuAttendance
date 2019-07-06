@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SignInMapper">
+  <resultMap id="BaseResultMap" type="com.model.SignIn">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="arrange_id" property="arrangeId" jdbcType="INTEGER"/>
+    <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+    <result column="stu_num" property="stuNum" jdbcType="INTEGER"/>
+    <result column="stu_num_in" property="stuNumIn" jdbcType="INTEGER"/>
+    <result column="start_time" property="startTime" jdbcType="BIGINT"/>
+  </resultMap>
+  <resultMap id="returnMap" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="course_name" javaType="java.lang.String" property="courseName"></result>
+    <result column="sign_id" javaType="java.lang.Integer" property="signId"></result>
+    <result column="teacher_id" javaType="java.lang.Integer" property="teacherId"></result>
+    <result column="day_num" javaType="java.lang.Integer" property="dayNum"></result>
+    <result column="lesson_begin" javaType="java.lang.Integer" property="lessonBegin"></result>
+    <result column="arrange_id" javaType="java.lang.Integer" property="arrangeId"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, arrange_id, teacher_id, stu_num, stu_num_in, start_time
+  </sql>
+  <select id="getAllSignTask" resultMap="returnMap" parameterType="java.util.HashMap">
+    SELECT c.id,c.course_name,s.stu_num,s.id as sign_id,s.stu_num_in,s.start_time,u.id as teacher_id
+    ,s.arrange_id,a.day_num,a.lesson_begin
+    from course c
+    LEFT JOIN arrange a on a.course_id = c.id
+    LEFT JOIN sign_in s on a.id = s.arrange_id
+    LEFT JOIN user u on u.id = c.teacher_id
+    WHERE !ISNULL(s.id)
+    <if test="courseName != null">
+      AND course_name LIKE "%"#{courseName}"%"
+    </if>
+    <if test="teacherId != null">
+      AND u.id = #{teacherId}
+    </if>
+    <if test="signId != null">
+      AND sign_id = #{signId}
+    </if>
+    <if test="startTimeBegin != null">
+      AND s.start_time &gt;= #{startTimeBegin}
+    </if>
+    <if test="startTimeEnd != null">
+      AND s.start_time &lt;= #{startTimeEnd}
+    </if>
+    <if test="dayNum != null">
+      AND day_num = #{dayNum}
+    </if>
+  </select>
+
+  <select id="getSignId" resultType="map" parameterType="java.util.HashMap">
+    SELECT arrange.course_id,sign_in.id as signId,sign_in.arrange_id ,arrange.latitude,arrange.longitude FROM course
+LEFT JOIN arrange ON arrange.course_id=course.id
+    INNER JOIN  sign_in ON arrange.id=sign_in.arrange_id
+WHERE sign_in.end_time is  NULL
+    <if test="courseId != null">
+      AND course.id = #{courseId}
+    </if>
+  </select>
+
+</mapper>

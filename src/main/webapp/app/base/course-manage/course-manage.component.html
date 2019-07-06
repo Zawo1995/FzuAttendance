@@ -1,0 +1,80 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-body">
+    <nz-input-group nzCompact>
+      <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="courseName" nzLabel="班课名称"></nz-option>
+        <nz-option nzValue="courseTime" nzLabel="班课时间"></nz-option>
+        <nz-option nzValue="courseOpenTime" nzLabel="开课时间"></nz-option>
+        <nz-option nzValue="teacherName" nzLabel="任课教师"></nz-option>
+      </nz-select>
+      <input *ngIf="searchName == 'courseName' || searchName == 'teacherName' || searchName == null"
+             [readonly]="searchName == null" type="text"
+             nz-input placeholder="请输入" style="width:25%;"
+             [(ngModel)]="searchValue"/>
+      <nz-input-number *ngIf="searchName == 'courseTime'" [(ngModel)]="searchValueSmall"></nz-input-number>
+      <nz-input-number *ngIf="searchName == 'courseTime'" [nzMin]="searchValueSmall"
+                       [(ngModel)]="searchValueLarge"></nz-input-number>
+      <nz-range-picker *ngIf="searchName == 'courseOpenTime'" [(ngModel)]="searchValue"></nz-range-picker>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+      <div style="float:right">
+        <button nz-button nzType="primary" nzSize="default" (click)="addCourse()"> 新增</button>
+        &nbsp;&nbsp;&nbsp;
+        <button [nzLoading]="buttonLoading" nz-button nzType="danger" nzSize="default" (click)="deleteCourses()">批量删除
+        </button>
+      </div>
+    </nz-input-group>
+
+
+    <hr/>
+
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" rowspan="2" nzWidth="80px"></th>
+        <th nzShowSort (nzSortChange)="sort('courseName',$event)" rowspan="2">班课名称</th>
+        <th rowspan="2" nzShowSort (nzSortChange)="sort('courseOpenTime',$event)">开课时间</th>
+        <th rowspan="2" nzShowSort (nzSortChange)="sort('teacherName',$event)">任课教师</th>
+        <th colspan="2">上课时间</th>
+        <th rowspan="2">操作</th>
+      </tr>
+      <tr>
+        <th nzShowSort (nzSortChange)="sort('startWeek',$event)">起始周</th>
+        <th nzShowSort (nzSortChange)="sort('endWeek',$event)">结束周</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td>{{i.courseName}}</td>
+        <td>{{i.courseOpenTime | date:'yyyy-MM-dd'}}</td>
+        <td>{{i.teacherName}}</td>
+        <td align="right">{{i.startWeek}}</td>
+        <td align="right">{{i.endWeek}}</td>
+        <td>
+          <a (click)="editCourse(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteCourse(i.id)">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <nz-dropdown>
+            <a nz-dropdown> 更多 <i nz-icon type="down"></i> </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item>
+                <a (click)="setArange(i.id)">排课</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<!--<ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" style="height: 150%;">-->
+  <!--<div *ngFor="let m of menuTree">-->
+  <!--<li  *ngIf="m.children.length == 0" nz-menu-item>-->
+    <!--<a [routerLink]="m.data.url">-->
+      <!--<i nz-icon [nzType]="m.data.icon" nzTheme="outline"></i>-->
+      <!--&lt;!&ndash;<span class="title">{{m.data.name}}</span>&ndash;&gt;-->
+      <!--{{m.data.name}}-->
+    <!--</a>-->
+  <!--</li>-->
+  <!--<li *ngIf="m.children.length != 0" nz-submenu>-->
+    <!--<span title><i nz-icon [type]="m.data.icon"></i><span class="nav-text">{{m.data.name}}</span></span>-->
+    <!--<ul>-->
+      <!--<li nz-menu-item *ngFor="let c of m.children">-->
+        <!--<a [routerLink]="c.data.url">-->
+          <!--<i nz-icon [nzType]="c.data.icon" nzTheme="outline"></i>-->
+          <!--<span class="title">{{c.data.name}}</span>-->
+          <!--{{c.data.name}}-->
+        <!--</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</li>-->
+  <!--</div>-->
+<!--</ul>-->

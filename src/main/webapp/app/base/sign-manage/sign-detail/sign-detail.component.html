@@ -1,0 +1,47 @@
+<nz-tabset [nzTabPosition]="'left'" [nzType]="'line'">
+
+  <nz-tab [nzTitle]="'已签到'"> 人数：{{signList.length}}
+    <ng-container>
+      <nz-table #table1 [nzData]="signList">
+        <thead>
+        <tr>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>学校</th>
+          <th>学院</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let s of table1.data">
+          <td>{{s.name}}</td>
+          <td>{{s.phone}}</td>
+          <td>{{s.schoolName}}</td>
+          <td>{{s.collegeName}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </ng-container>
+  </nz-tab>
+  <nz-tab [nzTitle]="'未签到'"> 人数：{{absentList.length}}
+    <nz-table #table2 [nzData]="absentList">
+      <thead>
+      <tr>
+        <th>姓名</th>
+        <th>电话</th>
+        <th>学校</th>
+        <th>学院</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let s of table2.data">
+        <td>{{s.name}}</td>
+        <td>{{s.phone}}</td>
+        <td>{{s.schoolName}}</td>
+        <td>{{s.collegeName}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+
+
+</nz-tabset>

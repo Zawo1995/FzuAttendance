@@ -1,0 +1,65 @@
+<div class="panel panel-default panelManager">
+    <div class="panel-body">
+    <nz-input-group nzCompact>
+      <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="schoolName" nzLabel="名称"></nz-option>
+        <nz-option nzValue="schoolAddress" nzLabel="地址"></nz-option>
+      </nz-select>
+      <input [readonly]="searchName == null" type="text" nz-input placeholder="请输入" style="width:25%;"
+             [(ngModel)]="searchValue"/>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+      <div style="float:right">
+        <button nz-button nzType="primary" nzSize="default" (click)="addSchool()"> 新增</button>
+        &nbsp;&nbsp;&nbsp;
+        <button [nzLoading]="buttonLoading" nz-button nzType="danger" nzSize="default" (click)="deleteSchools()">批量删除</button>
+      </div>
+    </nz-input-group>
+
+
+    <hr/>
+
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" nzWidth="80px"></th>
+        <th nzShowSort (nzSortChange)="sort('schoolName',$event)">学校名称</th>
+        <th nzShowSort (nzSortChange)="sort('schoolAddress',$event)">学校地址</th>
+        <th>备注</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td>{{i.schoolName}}</td>
+        <td>{{i.schoolAddress}}</td>
+        <td>{{i.schoolDetail}}</td>
+        <td>
+
+          <a (click)="editSchool(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteSchool(i.id)">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <nz-dropdown>
+            <a nz-dropdown> 更多 <i nz-icon type="down"></i> </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item >
+                <a (click)="openRestTimeManage(i)">作息时间</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-body">
+    <nz-input-group nzCompact>
+      <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="name" nzLabel="姓名"></nz-option>
+        <nz-option nzValue="roleId" nzLabel="角色"></nz-option>
+        <nz-option nzValue="registDate" nzLabel="注册时间"></nz-option>
+        <nz-option nzValue="phone" nzLabel="电话"></nz-option>
+        <nz-option nzValue="schoolName" nzLabel="所属学校"></nz-option>
+        <nz-option nzValue="collegeName" nzLabel="所属学院"></nz-option>
+      </nz-select>
+      <input *ngIf="searchName != 'registDate' && searchName != 'roleId'" [readonly]="searchName == null" type="text" nz-input placeholder="请输入"
+             style="width:25%;"
+             [(ngModel)]="searchValue"/>
+      <nz-range-picker *ngIf="searchName == 'registDate'" [(ngModel)]="searchValue"></nz-range-picker>
+      <nz-select style="width:180px" [(ngModel)]="searvhValueForSelect" *ngIf="searchName == 'roleId'">
+        <nz-option *ngFor="let r of roleSelect" [nzLabel]="r.name" [nzValue]="r.id"></nz-option>
+      </nz-select>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+      <div style="float:right">
+        <button nz-button nzType="primary" nzSize="default" (click)="addUser()"> 新增</button>
+        &nbsp;&nbsp;&nbsp;
+        <button [nzLoading]="buttonLoading" nz-button nzType="danger" nzSize="default" (click)="deleteUsers(true)">批量删除
+        </button>
+      </div>
+    </nz-input-group>
+
+
+    <hr/>
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th class="text-nowrap" nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" nzWidth="80px"></th>
+        <th class="text-nowrap"></th>
+        <th class="text-nowrap" nzShowSort (nzSortChange)="sort('name',$event)">姓名</th>
+        <th class="text-nowrap" nzShowSort (nzSortChange)="sort('roleName',$event)">角色</th>
+        <th class="text-nowrap" nzShowSort (nzSortChange)="sort('phone',$event)">电话</th>
+        <th class="text-nowrap" nzShowSort (nzSortChange)="sort('registDate',$event)">注册时间</th>
+        <th class="text-nowrap">所属学校</th>
+        <th class="text-nowrap">所属学院</th>
+        <th class="text-nowrap" style="text-align: center">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td><nz-avatar nzIcon="user" nzShape="square" [nzSrc]="i.imageUrl"></nz-avatar></td>
+        <td>{{i.name}}</td>
+        <td>{{i.roleName}}</td>
+        <td>{{i.phone}}</td>
+        <td>{{i.registDate | date:'yyyy-MM-dd'}}</td>
+        <td>{{i.schoolName}}</td>
+        <td>{{i.collegeName}}</td>
+        <td>
+          <a (click)="editUser(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteUsers(false, i.id)">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <nz-dropdown>
+            <a nz-dropdown> 更多 <i nz-icon type="down"></i> </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item>
+                <a (click)="openAccountSetting(i)">账户设置</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

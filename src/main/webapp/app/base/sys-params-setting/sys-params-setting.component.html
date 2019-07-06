@@ -1,0 +1,29 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-body">
+    <nz-list [nzDataSource]="datas" [nzRenderItem]="item" [nzGrid]="{ gutter: 16, span: 6 }" [nzLoading]="loading">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent">
+          <ng-template #nzContent>
+            <nz-card [nzTitle]="item.name" style="padding-bottom: 0px;">
+             <span nz-tooltip [nzTitle]="item.remark" *ngIf="!item.edit">
+               {{item.value + item.unit}}
+             </span>
+              <ng-container *ngIf="item.edit">
+                <nz-input-number [(ngModel)]="item.value"></nz-input-number>
+                {{item.unit}}
+              </ng-container>
+              <div class="operate-action" *ngIf="!item.edit">
+                <a nz-popconfirm nzTitle="确定重置?" (nzOnConfirm)="reset(item)">重置</a>
+                <a (click)="editParam(item)">编辑</a>
+              </div>
+              <div class="operate-action" *ngIf="item.edit">
+                <a (click)="cancel(item)">取消</a>
+                <a (click)="saveParam(item)">保存</a>
+              </div>
+            </nz-card>
+          </ng-template>
+        </nz-list-item>
+      </ng-template>
+    </nz-list>
+  </div>
+</div>

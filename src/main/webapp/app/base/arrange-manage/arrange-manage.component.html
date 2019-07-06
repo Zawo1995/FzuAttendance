@@ -1,0 +1,97 @@
+<div class="panel panel-default panelManager">
+
+  <div class="panel-heading">
+    <h2 class="panel-title" style="font-size: larger;margin:1% 1% 0 0">选择班课</h2>
+    <nz-select style="width: 120px;" [(ngModel)]="selectedCourseId" (ngModelChange)="queryList()">
+      <nz-option *ngFor="let o of courseOption" [nzValue]="o.id" [nzLabel]="o.courseName">
+      </nz-option>
+    </nz-select>
+  </div>
+
+  <div class="panel-body">
+  <nz-input-group nzCompact>
+    <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+      <nz-option nzValue="courseAddress" nzLabel="上课地点"></nz-option>
+      <nz-option nzValue="dayNum" nzLabel="星期"></nz-option>
+      <nz-option nzValue="lessonBegin" nzLabel="第几节课"></nz-option>
+      <nz-option nzValue="lessonLength" nzLabel="课时数"></nz-option>
+    </nz-select>
+    <input *ngIf="searchName == 'courseAddress' || searchName == null"
+           [readonly]="searchName == null" type="text"
+           nz-input placeholder="请输入" style="width:25%;"
+           [(ngModel)]="searchValue"/>
+    <nz-input-number *ngIf="searchName == 'dayNum'" [(ngModel)]="searchValue" nzMin="1" nzMax="7"></nz-input-number>
+    <nz-input-number *ngIf="searchName == 'lessonLength' || searchName == 'lessonBegin'"
+                     [(ngModel)]="searchValueSmall"></nz-input-number>
+    <nz-input-number *ngIf="searchName == 'lessonLength' || searchName == 'lessonBegin'" [nzMin]="searchValueSmall"
+                     [(ngModel)]="searchValueLarge"></nz-input-number>
+    <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+      <i nz-icon nzType="search" nzTheme="outline"></i>
+    </button>
+    <button nz-button (click)="refresh()">
+      <i nz-icon nzType="sync" nzTheme="outline"></i>
+    </button>
+    <div style="float:right">
+      <button nz-button nzType="primary" nzSize="default" (click)="addArrange()"> 新建</button>
+      <button [nzLoading]="buttonLoading" style="margin-left: 8px" nz-button nzType="danger" nzSize="default"
+              (click)="deleteArranges()">批量删除
+      </button>
+    </div>
+  </nz-input-group>
+
+  <nz-divider nzDashed></nz-divider>
+
+  <nz-table #rowSelectionTable
+            nzShowPagination
+            nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+            [nzLoading]="loading">
+    <thead>
+    <tr>
+      <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+          [nzIndeterminate]="isIndeterminate" rowspan="2" style="width: 50px;"></th>
+      <th nzShowSort (nzSortChange)="sort('courseAddress',$event)" rowspan="2" class="text-nowrap">上课地点</th>
+      <th colspan="2" class="text-nowrap">教室规模</th>
+      <th colspan="3" class="text-nowrap">上课时间</th>
+      <th rowspan="2" class="text-nowrap" style="width: 200px;">操作</th>
+    </tr>
+    <tr>
+      <th nzShowSort (nzSortChange)="sort('setRow',$event)" class="text-nowrap" style="width: 100px;">排数</th>
+      <th nzShowSort (nzSortChange)="sort('setColumn',$event)" class="text-nowrap" style="width: 100px;">列数</th>
+      <th nzShowSort (nzSortChange)="sort('dayNum',$event)" class="text-nowrap" style="width: 100px;">时间</th>
+      <th nzShowSort (nzSortChange)="sort('lessonBegin',$event)" class="text-nowrap" style="width: 100px;">第几节</th>
+      <th nzShowSort (nzSortChange)="sort('lessonLength',$event)" class="text-nowrap" style="width: 100px;">课时数</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+      <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+      <td class="text-nowrap">
+        {{i.courseAddress}}
+      </td>
+      <td align="right" class="text-nowrap">
+        {{i.setRow}}
+      </td>
+      <td align="right" class="text-nowrap">
+        {{i.setColumn}}
+      </td>
+      <td class="text-nowrap">
+        {{i.dayNum | dayNum:''}}
+      </td>
+      <td align="right" class="text-nowrap">
+        {{ i.lessonBegin }}
+      </td>
+      <td align="right" class="text-nowrap">
+        {{ i.lessonLength }}
+      </td>
+      <td>
+        <div class="edit-row-operations">
+          <a (click)="editArrange(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a nz-popconfirm nzTitle="确定删除?" (nzOnConfirm)="deleteArrange(i.id)">删除</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>
+</div>

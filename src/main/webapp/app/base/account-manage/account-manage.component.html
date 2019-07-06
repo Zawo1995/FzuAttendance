@@ -1,0 +1,30 @@
+<div nz-row *ngIf="loading" class="spining">
+  <div nz-col>
+    <nz-spin nzTip="加载中..." nzSize="large" nzSimple></nz-spin>
+  </div>
+</div>
+
+<div nz-row nzGutter="16" *ngIf="!loading">
+  <div nz-col nzSpan="6" *ngFor="let item of datas" style="height:200px">
+    <nz-card [nzTitle]="cardTitle" style="padding-bottom: 0px;">
+      <ng-template #cardTitle>
+        <ng-container>
+          {{item.method}}
+        </ng-container>
+      </ng-template>
+      <span nz-tooltip [nzTitle]="item.loginAccount">
+               <i nz-icon [nzType]="mapForMethod[item.method]?mapForMethod[item.method].icon:null"></i>
+               {{item.loginAccount}}
+             </span>
+      <div class="operate-action">
+        <a nz-popconfirm nzTitle="确定删除?" (nzOnConfirm)="deleteAccount(item)">删除</a>
+        <a (click)="editAccount(item)">编辑</a>
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="6" style="height:200px">
+    <button nz-button style="width: 100%;height: 100%;margin:0px;font-size:50px" (click)="addAccount()">
+      +
+    </button>
+  </div>
+</div>

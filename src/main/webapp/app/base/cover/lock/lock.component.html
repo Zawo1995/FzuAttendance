@@ -1,0 +1,29 @@
+<div class="ant-card width-lg" style="margin: 0 auto;">
+  <div class="ant-card-body">
+    <div class="avatar">
+      <nz-avatar [nzSrc]="true" nzIcon="user" nzSize="large"></nz-avatar>
+    </div>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submit()" role="form" class="mt-md"
+          style="background-color: white;margin-left: 35%;margin-right: 35%;">
+      <nz-alert *ngIf="error != ''" nzType="error" nzMessage="错误"
+                [nzDescription]="error"
+                [nzShowIcon]="true" style="margin-bottom: 5%;">
+      </nz-alert>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzSuffixIcon="lock">
+            <input type="password" nz-input formControlName="password" />
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">
+            请输入密码
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-row nzType="flex" nzAlign="middle">
+        <nz-col [nzOffset]="12" [nzSpan]="12" style="text-align:right;">
+          <button nz-button [disabled]="!validateForm.valid" nzType="primary">解锁</button>
+        </nz-col>
+      </nz-row>
+    </form>
+  </div>
+</div>

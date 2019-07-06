@@ -1,0 +1,71 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="3">上课地址</nz-form-label>
+    <nz-form-control [nzSpan]="15">
+      <input nz-input placeholder="请输入上课地址" formControlName="courseAddress"/>
+      <nz-form-explain *ngIf="validateForm.get('courseAddress')?.dirty && validateForm.get('courseAddress')?.errors">
+        请输入上课地址
+      </nz-form-explain>
+    </nz-form-control>
+    <button nz-button (click)="openBaiduMap()">打开地图</button>
+  </nz-form-item>
+
+  <nz-divider nzText="教室"></nz-divider>
+  <nz-form-label [nzSpan]="3">排数</nz-form-label>
+  <nz-form-control [nzSpan]="6">
+    <nz-input-number [nzMin]="1" formControlName="setRow"></nz-input-number>
+    <nz-form-explain *ngIf="validateForm.get('setRow')?.dirty && validateForm.get('setRow')?.errors">
+      请输入排数
+    </nz-form-explain>
+  </nz-form-control>
+  <nz-form-label [nzSpan]="3">列数</nz-form-label>
+  <nz-form-control [nzSpan]="6">
+    <nz-input-number [nzMin]="1" formControlName="setColumn"></nz-input-number>
+    <nz-form-explain *ngIf="validateForm.get('setColumn')?.dirty && validateForm.get('setColumn')?.errors">
+      请输入列数
+    </nz-form-explain>
+  </nz-form-control>
+
+  <nz-divider nzText="时间"></nz-divider>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="3">星期几</nz-form-label>
+    <nz-form-control [nzSpan]="15">
+      <nz-input-number nzMin="1" nzMax="8" formControlName="dayNum"></nz-input-number>
+      <nz-form-explain *ngIf="validateForm.get('dayNum')?.dirty && validateForm.get('dayNum')?.errors">
+        请输入星期几上课
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-row>
+    <nz-col nzSpan="3">
+      <nz-form-label>第几节</nz-form-label>
+    </nz-col>
+    <nz-col nzSpan="6">
+      <nz-form-control>
+        <nz-input-number [nzMin]="1" formControlName="lessonBegin"></nz-input-number>
+        <nz-form-explain *ngIf="validateForm.get('lessonBegin')?.dirty && validateForm.get('lessonBegin')?.errors">
+          请输入第几节开始上课
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-col>
+    <nz-col nzSpan="3">
+      <nz-form-label>课时数</nz-form-label>
+    </nz-col>
+    <nz-col nzSpan="6">
+      <nz-form-control>
+        <nz-input-number [nzMin]="1" nzMax="11" formControlName="lessonLength"></nz-input-number>
+        <nz-form-explain *ngIf="validateForm.get('lessonLength')?.dirty && validateForm.get('lessonLength')?.errors">
+          请输入课时
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-col>
+  </nz-row>
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

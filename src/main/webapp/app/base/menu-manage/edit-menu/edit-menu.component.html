@@ -1,0 +1,32 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">菜单名称</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入菜单名称" formControlName="name"/>
+      <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">
+        请输入菜单名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">菜单图标</nz-form-label>
+    <i nz-icon style="font-size: 24px" [nzType]="icon"></i>
+    <a style="margin-left:8px;font-size:12px;" (click)="openIconSelection()">
+      打开图标库
+    </a>
+
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</form>
+
+
+<input nz-input hidden name="icon" [(ngModel)]="icon"/>

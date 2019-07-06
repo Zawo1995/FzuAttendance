@@ -1,0 +1,44 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="3">班课名称</nz-form-label>
+    <nz-form-control [nzSpan]="15">
+      <input nz-input placeholder="请输入班课名称" formControlName="courseName"/>
+      <nz-form-explain *ngIf="validateForm.get('courseName')?.dirty && validateForm.get('courseName')?.errors">
+        请输入班课名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-row>
+    <nz-col nzSpan="3">
+      <nz-form-label>起始周</nz-form-label>
+    </nz-col>
+    <nz-col nzSpan="6">
+      <nz-form-control>
+        <nz-input-number [nzMin]="0" formControlName="startWeek"></nz-input-number>
+        <nz-form-explain *ngIf="validateForm.get('startWeek')?.dirty && validateForm.get('startWeek')?.errors">
+          请输入起始周
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-col>
+    <nz-col nzSpan="3">
+      <nz-form-label>结束周</nz-form-label>
+    </nz-col>
+    <nz-col nzSpan="6">
+      <nz-form-control>
+        <nz-input-number [nzMin]="validateForm.value.startWeek" formControlName="endWeek"></nz-input-number>
+        <nz-form-explain *ngIf="validateForm.get('endWeek')?.dirty && validateForm.get('endWeek')?.errors">
+            请输入结束周
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-col>
+  </nz-row>
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+      <button nz-button (click)="resetForm($event)">重置</button>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

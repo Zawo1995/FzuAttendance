@@ -1,0 +1,37 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">学院名称</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入学院名称" formControlName="collegeName"/>
+      <nz-form-explain *ngIf="validateForm.get('collegeName')?.dirty && validateForm.get('collegeName')?.errors">
+        请输入学院名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">学院地址</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入学院地址" formControlName="collegeAddress"/>
+      <nz-form-explain *ngIf="validateForm.get('collegeAddress')?.dirty && validateForm.get('collegeAddress')?.errors">
+        请输入学院名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">备注</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="collegeDetail" nz-input rows="2" placeholder></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</form>

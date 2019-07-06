@@ -1,0 +1,9 @@
+.operate-action a{
+  float:right;
+  margin-left: 8px;
+  margin-top: 50px;
+}
+
+.ant-card-body{
+  padding-bottom: 10px;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CollegeMapper">
+  <resultMap id="BaseResultMap" type="com.model.College">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="college_name" jdbcType="VARCHAR" property="collegeName" />
+    <result column="college_address" jdbcType="VARCHAR" property="collegeAddress" />
+    <result column="college_detail" jdbcType="VARCHAR" property="collegeDetail" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="returnMap" type="java.util.HashMap">
+    <result column="school_address" javaType="java.lang.String" property="schoolAddress"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, school_id, college_name, college_address, college_detail
+  </sql>
+
+
+  <select id="selectAllCollege" resultMap="returnMap" parameterType="com.model.collegedto.CollegeQuery">
+    SELECT college.*,school.school_name,school.school_address FROM college
+    LEFT JOIN school on school_id = school.id
+    WHERE college.id != -1
+    <if test="schoolId != null">
+      AND school_id = #{schoolId}
+    </if>
+    <if test="schoolIds != null">
+      AND school_id IN
+      <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+    </if>
+    <if test="collegeName != null">
+      AND college.college_name LIKE "%"#{collegeName}"%"
+    </if>
+    <if test="collegeAddress != null">
+      AND college.college_address LIKE "%"#{collegeAddress}"%"
+    </if>
+    <if test="schoolAddress != null">
+      AND school_address LIKE "%"#{schoolAddress}"%"
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,63 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-heading">
+    <h2 class="panel-title" style="font-size: larger;margin-top: 1%;">选择学校</h2>
+    <nz-select style="width: 120px;" [(ngModel)]="selectedSchoolId" (ngModelChange)="queryList()">
+      <nz-option *ngFor="let o of schoolOption" [nzValue]="o.id" [nzLabel]="o.schoolName">
+      </nz-option>
+    </nz-select>
+  </div>
+  <div class="panel-body">
+    <nz-input-group nzCompact>
+      <nz-select nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="collegeName" nzLabel="名称"></nz-option>
+        <nz-option nzValue="collegeAddress" nzLabel="地址"></nz-option>
+      </nz-select>
+      <input [readonly]="searchName == null" type="text" nz-input placeholder="请输入" style="width:25%;"
+             [(ngModel)]="searchValue"/>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+      <div style="float:right">
+        <button nz-button nzType="primary" nzSize="default" (click)="addCollege()"> 新增</button>
+        &nbsp;&nbsp;&nbsp;
+        <button [nzLoading]="buttonLoading" nz-button nzType="danger" nzSize="default" (click)="deleteColleges()">批量删除
+        </button>
+      </div>
+    </nz-input-group>
+
+
+    <hr/>
+
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" nzWidth="80px"></th>
+        <th nzShowSort (nzSortChange)="sort('schoolAddress',$event)">学院名称</th>
+        <th nzShowSort (nzSortChange)="sort('schoolAddress',$event)">学院地址</th>
+        <th>备注</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td>{{i.collegeName}}</td>
+        <td>{{i.schoolAddress + '---' + i.collegeAddress}}</td>
+        <td>{{i.collegeDetail}}</td>
+        <td>
+          <a (click)="editCollege(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteOneCollege(i.id)">删除</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

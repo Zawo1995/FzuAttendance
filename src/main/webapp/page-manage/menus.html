@@ -1,0 +1,67 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="300" [nzReverseArrow]="isReverseArrow"
+            [nzTrigger]="null">
+    <div style="text-align: center">
+      <img class="logo" src="./assets/logo-color.svg" />
+      <span style="color:lightgrey;font-size: 33px;vertical-align: middle" *ngIf="!isCollapsed">超级考勤</span>
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed" style="height: 150%;">
+      <ng-container *ngFor="let m of menuTree">
+        <li *ngIf="m.children.length == 0" nz-menu-item [routerLink]="m.data.url">
+          <i nz-icon [nzType]="m.data.icon"></i>
+          <span>{{m.data.name}}</span>
+        </li>
+        <li *ngIf="m.children.length != 0" nz-submenu>
+          <span title><i nz-icon [type]="m.data.icon"></i><span class="nav-text">{{m.data.name}}</span></span>
+          <ul>
+            <li nz-menu-item *ngFor="let c of m.children">
+              <a [routerLink]="c.data.url">
+                <i nz-icon [nzType]="c.data.icon"></i>
+                {{c.data.name}}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="background: #fff; padding:0;">
+      <i
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></i>
+      <nz-button-group style="float:right">
+        <nz-dropdown>
+          <button nz-button nz-dropdown
+                  style="border: 0px;display: inline-block;height: 100%;padding: 0;cursor: pointer;transition: all .3s;">
+            <nz-avatar nzIcon="user" [nzSrc]="user.imageUrl"></nz-avatar>
+            <span style="font-size: 24px;margin:0 0  0 15px">{{user.name != null?user.name:'请设置'}}
+                <span class="phone-text">tel:{{user.phone}}</span>
+            </span>
+          </button>
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="editUser()"><i nz-icon type="user"></i><span>修改信息</span></li>
+            <li nz-menu-item (click)="editAccount()"><i nz-icon type="setting"></i><span>修改账户</span></li>
+            <li nz-menu-divider></li>
+            <li nz-menu-item (click)="lock()"><i nz-icon type="lock"></i><span>锁屏</span></li>
+            <li nz-popconfirm nzTitle="真的要退出吗？" (nzOnConfirm)="logout()" (nzOnCancel)="false" nz-menu-item>
+              <i nz-icon
+                 type="logout"></i><span>退出登录</span>
+            </li>
+          </ul>
+        </nz-dropdown>
+      </nz-button-group>
+    </nz-header>
+    <nz-content>
+      <nz-breadcrumb [nzAutoGenerate]="true">
+      </nz-breadcrumb>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,150 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="margin-left: 10%;">
+
+  <table>
+    <tr>
+      <td rowspan="3" colspan="2" style="text-align: center">
+        <nz-avatar nzSize="100" nzIcon="user" *ngIf="imageUrl == null || imageUrl == ''"
+                   style="margin-right:16%;"></nz-avatar>
+        <img style="width: 142px;" *ngIf="imageUrl != null && imageUrl!= ''"
+             [src]="imageUrl" alt="Avatar"/>
+        <nz-upload nzAction="user/uploadImg" [nzShowUploadList]="false" [nzData]="{id:validateForm.value.id}"
+                   (nzChange)="handleChange($event)">
+          <button [nzLoading]="uploadLoading" nz-button class="button_view">
+            <i nz-icon nzType="upload"></i>
+            <span>更换头像</span>
+          </button>
+        </nz-upload>
+      </td>
+      <td style="width:5%;"></td>
+      <td>
+        <nz-form-label nzRequired>
+          <span>昵称<i nz-icon nz-tooltip nzTitle="你想叫啥呢" type="question-circle" theme="outline"></i></span>
+        </nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="name" autocomplete="off"/>
+          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">
+            请输入昵称
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:5%;"></td>
+      <td>
+        <nz-form-label nzRequired>角色</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select formControlName="roleId" [nzDisabled]="user.roleId != -1 || user.roleId != 0">
+            <nz-option *ngFor="let o of roleOption" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('roleId')?.dirty && validateForm.get('roleId')?.errors">
+            请分配角色
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:5%;"></td>
+      <td>
+        <nz-form-label nzRequired>所属机构</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-cascader formControlName="orgValues" [nzOptions]="orgOption" nzPlaceHolder="请选择"></nz-cascader>
+          <nz-form-explain *ngIf="validateForm.get('orgValues')?.dirty && validateForm.get('orgValues')?.errors">
+            请选择所属机构
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <nz-form-label nzRequired>电话</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input type="text" formControlName="phone" autocomplete="off"/>
+          <nz-form-explain *ngIf="validateForm.get('phone')?.dirty && validateForm.get('phone')?.errors">
+            请输入有效的手机号码
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td style="width:10%;"></td>
+      <td>
+      </td>
+      <td>
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <nz-form-label nzRequired>密码</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input type="password" formControlName="passwordReadonly" autocomplete="off" readonly/>
+        </nz-form-control>
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div *ngIf="isMore" style="border: dashed 2px #d9d9d9;margin-right: 13%;">
+    <table style="margin: 5px;">
+      <tr>
+        <td>
+          <nz-form-label nzRequired>
+            新密码
+          </nz-form-label>
+        </td>
+        <td style="width: 5%;"></td>
+        <td>
+          <nz-form-control>
+            <input nz-input type="password" formControlName="password"/>
+            <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">
+              请输入密码
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <nz-form-label nzRequired>确认密码</nz-form-label>
+        </td>
+        <td></td>
+        <td>
+          <nz-form-control>
+            <input nz-input type="password" formControlName="checkPassword" autocomplete="false"/>
+            <nz-form-explain
+              *ngIf="validateForm.get('checkPassword')?.dirty && validateForm.get('checkPassword')?.errors">
+              <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">请再次输入密码</ng-container>
+              <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">两次输入的密码不一致</ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <nz-footer style="background:#ffffff">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" [nzOffset]="14">
+        <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+        <a style="margin-left:8px;font-size:12px;" (click)="togglePasswordSetting()">
+          修改密码
+          <i nz-icon [type]="isMore ? 'up' : 'down'"></i>
+        </a>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-footer>
+</form>
+
+

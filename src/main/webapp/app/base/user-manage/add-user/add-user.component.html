@@ -1,0 +1,166 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+  <table>
+    <tr>
+      <td>
+        <nz-form-label nzRequired>手机号码</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input type="text" formControlName="phone" autocomplete="off"/>
+          <nz-form-explain *ngIf="validateForm.get('phone')?.dirty && validateForm.get('phone')?.errors">
+            请输入有效的手机号码
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td style="width:10%;"></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <nz-form-label nzRequired>密码</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input type="password" formControlName="password" autocomplete="off"
+                 (ngModelChange)="updateConfirmValidator()"/>
+          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors">
+            请输入密码
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td style="width:10%;"></td>
+      <td>
+        <nz-form-label nzRequired>确认密码</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input type="password" formControlName="checkPassword" autocomplete="false"/>
+          <nz-form-explain
+            *ngIf="validateForm.get('checkPassword')?.dirty && validateForm.get('checkPassword')?.errors">
+            <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">请再次输入密码</ng-container>
+            <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">两次输入的密码不一致</ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <nz-form-label nzRequired>
+          <span>昵称<i nz-icon nz-tooltip nzTitle="你想叫啥呢" type="question-circle" theme="outline"></i></span>
+        </nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <input nz-input formControlName="name" autocomplete="off"/>
+          <nz-form-explain *ngIf="validateForm.get('name')?.dirty && validateForm.get('name')?.errors">
+            请输入昵称
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+      <td style="width:10%;"></td>
+      <td>
+        <nz-form-label nzRequired>角色</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-select formControlName="roleId">
+            <nz-option *ngFor="let o of roleOption" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('roleId')?.dirty && validateForm.get('roleId')?.errors">
+            请分配角色
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <nz-form-label nzRequired>所属机构</nz-form-label>
+      </td>
+      <td>
+        <nz-form-control>
+          <nz-cascader formControlName="orgValues" [nzOptions]="orgOption" nzPlaceHolder="请选择"></nz-cascader>
+          <nz-form-explain *ngIf="validateForm.get('orgValues')?.dirty && validateForm.get('orgValues')?.errors">
+            请选择所属机构
+          </nz-form-explain>
+        </nz-form-control>
+      </td>
+    </tr>
+  </table>
+
+  <div *ngIf="isMore" style="border: dashed 2px #d9d9d9">
+    <nz-form-label style="margin:5px;font-size: 16px">更多登录方式</nz-form-label>
+    <table style="margin: 5px;">
+      <tr>
+        <td>
+          <label nz-checkbox formControlName="emailChecked">
+            邮箱
+            <i nz-icon type="mail"></i>
+          </label>
+        </td>
+        <td style="width: 5%;"></td>
+        <td>
+          <label nz-checkbox formControlName="qqChecked">
+            QQ
+            <i nz-icon nzType="qq" nzTheme="outline"></i>
+          </label>
+        </td>
+        <td style="width: 5%;"></td>
+        <td>
+          <label nz-checkbox formControlName="weChatChecked">
+            微信
+            <i nz-icon nzType="wechat" nzTheme="outline"></i>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <nz-form-control *ngIf="validateForm.value.emailChecked">
+            <input nz-input type="text" formControlName="email"/>
+            <nz-form-explain *ngIf="validateForm.get('email')?.dirty && validateForm.get('email')?.errors">
+              邮箱非法
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+        <td></td>
+        <td>
+          <nz-form-control *ngIf="validateForm.value.qqChecked">
+            <input nz-input type="text" formControlName="qq"/>
+            <nz-form-explain *ngIf="validateForm.get('qq')?.dirty && validateForm.get('qq')?.errors">
+              qq号非法
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+        <td></td>
+        <td>
+          <nz-form-control *ngIf="validateForm.value.weChatChecked">
+            <input nz-input type="text" formControlName="weChat"/>
+            <nz-form-explain *ngIf="validateForm.get('weChat')?.dirty && validateForm.get('weChat')?.errors">
+              微信号码非法
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <nz-footer style="background:#ffffff">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" [nzOffset]="14">
+        <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+        <button nz-button (click)="resetForm($event)" style="margin-left: 8px">重置</button>
+        <a style="margin-left:8px;font-size:12px;" (click)="toggleMore()">
+          更多
+          <i nz-icon [type]="isMore ? 'up' : 'down'"></i>
+        </a>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-footer>
+</form>
+
+

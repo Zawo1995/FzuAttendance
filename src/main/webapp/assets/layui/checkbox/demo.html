@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>demo</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="./layui/css/layui.css" media="all">
+</head>
+
+<body>
+
+    <script src="./layui/layui.js" charset="utf-8"></script>
+    <script>
+        layui.use(['checkbox', 'layer'], function () {
+            var $ = layui.$
+                , layer = layui.layer
+                , checkbox = layui.checkbox;
+
+            layer.open({
+                type: 1,
+                title: 'Checkbox',
+                area: ['550px', '350px'],
+                content: '<div id="testbox"></div>',
+                success: function (layero, index) {
+                    $("#testbox").children("li").remove();
+                    checkbox({
+                        elem: "#testbox"
+                        , nodes: [
+                            { "id": 1, "name": "姓名", "type": "文本型", "on": true }
+                            , { "id": 2, "name": "年龄", "type": "数值型", "on": false }
+                            , { "id": 3, "name": "生日", "type": "日期型", "on": true }
+                            , { "id": 4, "name": "电话", "type": "文本型", "on": false }
+                            , { "id": 5, "name": "微信", "type": "文本型", "on": true }
+                            , { "id": 6, "name": "邮箱", "type": "文本型", "on": true }
+                            , { "id": 7, "name": "备注", "type": "文本型", "on": true }
+                        ]
+                        , click: function (node) {
+                            console.log("点击", node);
+                        }
+                        , del: function (node) {
+                            console.log("删除", node);
+                            return true;
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

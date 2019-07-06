@@ -1,0 +1,31 @@
+<div nz-row *ngIf="loading" class="spining">
+  <div nz-col>
+    <nz-spin nzTip="加载中..." nzSize="large" nzSimple></nz-spin>
+  </div>
+</div>
+
+<div nz-row *ngIf="!loading">
+  <nz-tree #nzTreeComponent [nzData]="menuTree"
+           nzExpandAll
+           nzShowIcon
+           [nzExpandedIcon]="ExpandedIconTpl"
+           nzCheckable
+           [nzCheckedKeys]="checkedMenus"
+  >
+    <ng-template #ExpandedIconTpl let-node>
+      <i
+        *ngIf="!node.origin.isLeaf"
+        nz-icon
+        [type]="node.isExpanded ? 'down-circle' : 'right-circle'"
+        nzTheme="twotone"
+        style="font-size: 20px;"
+        class="ant-tree-switcher-line-icon"
+      ></i>
+    </ng-template>
+  </nz-tree>
+
+  <nz-footer style="background:#ffffff;padding: 0 0 0 0;">
+    <button style="float:right" nz-button (click)="save()">保存</button>
+  </nz-footer>
+</div>
+

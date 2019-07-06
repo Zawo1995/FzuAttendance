@@ -1,0 +1,58 @@
+<div>
+  <div nz-row>
+    <div nz-col nzSpan="8">
+      <button style="align-items: center" nz-button nzType="primary" *ngIf="!isUpdate" (click)="update()">修改</button>
+      <button  style="align-items: center" nz-button nzType="primary" *ngIf="isUpdate" (click)="update()" [nzLoading]="loading">保存</button>
+    </div>
+    <div nz-col nzSpan="8">上课时长：{{lessonTime}}
+      <!--<nz-input-number [(ngModel)]="lessonTime" [nzDisabled]="!isUpdate" [nzMin]="1" [nzStep]="1">-->
+      <!--</nz-input-number>-->
+      分钟
+    </div>
+    <div nz-col nzSpan="8">课间时长：{{breakTime}}
+      <!--<nz-input-number [(ngModel)]="breakTime" [nzDisabled]="!isUpdate" [nzMin]="1" [nzStep]="1">-->
+      <!--</nz-input-number>-->
+      分钟
+    </div>
+  </div>
+
+  <hr style="color:green">
+
+  <div nz-row>
+    <div nz-col nzSpan="8">
+      <nz-timeline>
+        <nz-timeline-item *ngFor="let i of data.lessonMorning" nzColor="blue">
+          <p>{{i.lessonWhen + lessonDelay * 60000| date: 'HH:mm'}}</p>
+          <p>{{i.lessonMsg}}</p>
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-timeline>
+        <nz-timeline-item *ngFor="let i of data.lessonAfternoon" nzColor="red">
+          <p>{{i.lessonWhen + lessonDelay * 60000| date: 'HH:mm'}}</p>
+          <p>{{i.lessonMsg}}</p>
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+    <div nz-col nzSpan="8">
+      <nz-timeline>
+        <nz-timeline-item *ngFor="let i of data.lessonNight" nzColor="black">
+          <p>{{i.lessonWhen + lessonDelay * 60000| date: 'HH:mm'}}</p>
+          <p>{{i.lessonMsg}}</p>
+        </nz-timeline-item>
+      </nz-timeline>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzSpan="6">
+      时间调整:
+    </div>
+    <div nz-col nzSpan="18">
+      <nz-slider [(ngModel)]="lessonDelay" [nzDisabled]="!isUpdate" [nzMin]="-50" [nzMax]="50" [nzStep]="1">
+      </nz-slider>
+    </div>
+  </div>
+</div>
+
+

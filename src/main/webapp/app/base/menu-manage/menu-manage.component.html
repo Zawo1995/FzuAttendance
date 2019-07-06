@@ -1,0 +1,39 @@
+<div class="panel panel-default panelManager">
+  <div nz-row *ngIf="loading" class="spining">
+    <div nz-col>
+      <nz-spin nzTip="加载中..." nzSize="large" nzSimple></nz-spin>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="panel-body">
+    <div nz-row>
+      <div nz-col [nzSpan]="12" >
+        <nz-tree #nzTreeComponent [nzData]="menuTree"   nzExpandAll nzShowIcon [nzExpandedIcon]="ExpandedIconTpl" (nzClick)="updateButtonState($event)">
+          <ng-template #ExpandedIconTpl let-node>
+            <i
+              *ngIf="!node.origin.isLeaf"
+              nz-icon
+              [type]="node.isExpanded ? 'down-circle' : 'right-circle'"
+              nzTheme="twotone"
+              style="font-size: 20px;"
+              class="ant-tree-switcher-line-icon"
+            ></i>
+          </ng-template>
+        </nz-tree>
+      </div>
+      <div nz-col [nzSpan]="12" >
+        <table style="font-size: 30px">
+          <tr>
+            <button (click)="up()" nzSize="large" nz-button [disabled]="!enableUp"><i nz-icon nzType="up-square" nzTheme="twotone"></i>上移</button>
+          </tr>
+          <tr>
+            <button (click)="down()" nzSize="large" nz-button [disabled]="!enableDown"><i nz-icon nzType="down-square" nzTheme="twotone"></i>下移</button>
+          </tr>
+          <tr>
+            <button (click)="edit()" nzSize="large" nz-button [disabled]="!enableEdit"><i nz-icon nzType="edit" nzTheme="twotone"></i>修改</button>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

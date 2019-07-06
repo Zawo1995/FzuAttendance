@@ -1,0 +1,52 @@
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 44px;
+  margin: 16px;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-content {
+  margin: 0 16px;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+.ant-avatar, .ant-avatar-icon {
+  width: 50px;
+  height: 50px;
+  font-size: 50px;
+}
+
+.phone-text {
+  position: relative;
+  top: 24px;
+  right: 31px;
+  font-size: 18px;
+  font-family: serif;
+}

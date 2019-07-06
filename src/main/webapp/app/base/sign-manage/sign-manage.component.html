@@ -1,0 +1,64 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-body">
+    <nz-input-group nzCompact>
+      <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="startTime" nzLabel="发起时间"></nz-option>
+        <nz-option nzValue="courseName" nzLabel="课程名称"></nz-option>
+        <nz-option nzValue="dayNum" nzLabel="星期几"></nz-option>
+      </nz-select>
+      <input *ngIf="searchName == 'courseName' || searchName == null"
+             [readonly]="searchName == null" type="text"
+             nz-input placeholder="请输入" style="width:25%;"
+             [(ngModel)]="searchValue"/>
+      <nz-range-picker *ngIf="searchName == 'startTime'" [(ngModel)]="searchValue"></nz-range-picker>
+      <nz-select style="width: 120px;" [(ngModel)]="searchDayNum"  *ngIf="searchName == 'dayNum'">
+        <nz-option nzValue="1" nzLabel="一"></nz-option>
+        <nz-option nzValue="2" nzLabel="二"></nz-option>
+        <nz-option nzValue="3" nzLabel="三"></nz-option>
+        <nz-option nzValue="4" nzLabel="四"></nz-option>
+        <nz-option nzValue="5" nzLabel="五"></nz-option>
+        <nz-option nzValue="6" nzLabel="六"></nz-option>
+        <nz-option nzValue="7" nzLabel="天"></nz-option>
+      </nz-select>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+    </nz-input-group>
+
+    <nz-divider nzDashed></nz-divider>
+
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" nzWidth="80px"></th>
+        <th nzShowSort (nzSortChange)="sort('courseName',$event)">课程名称</th>
+        <th nzShowSort (nzSortChange)="sort('startTime',$event)">发起时间</th>
+        <th nzShowSort (nzSortChange)="sort('stuNum',$event)">应到人数</th>
+        <th nzShowSort (nzSortChange)="sort('stuNumIn',$event)">实到人数</th>
+        <th nzShowSort (nzSortChange)="sort('dayNum',$event)">上课时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td>{{i.courseName}}</td>
+        <td>{{i.startTime | date:'yyyy-MM-dd hh:mm'}}</td>
+        <td>{{i.stuNum}}</td>
+        <td>{{i.stuNumIn}}</td>
+        <td>{{'星期' + i.dayNum + '  第' + i.lessonBegin + '节课'}}</td>
+        <td>
+          <a (click)="openSignDetail(i)">查看详情</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

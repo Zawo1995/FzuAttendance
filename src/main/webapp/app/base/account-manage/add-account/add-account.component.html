@@ -1,0 +1,31 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">登录方式</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入登录方式" formControlName="method"/>
+      <nz-form-explain *ngIf="validateForm.get('method')?.dirty && validateForm.get('method')?.errors">
+        请输入登录方式
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">账户名称</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入账户名称" formControlName="loginAccount"/>
+      <nz-form-explain *ngIf="validateForm.get('loginAccount')?.dirty && validateForm.get('loginAccount')?.errors">
+        请输入账户名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+      <button nz-button (click)="resetForm($event)">重置</button>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</form>

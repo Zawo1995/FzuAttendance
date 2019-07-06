@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.SignDetailMapper">
+  <resultMap id="BaseResultMap" type="com.model.SignDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sign_id" jdbcType="INTEGER" property="signId" />
+    <result column="sign_time" jdbcType="BIGINT" property="signTime" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="longitude" jdbcType="DOUBLE" property="longitude" />
+    <result column="latitude" jdbcType="DOUBLE" property="latitude" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+  </resultMap>
+  <resultMap id="returnMap" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="college_name" javaType="java.lang.String" property="collegeName"></result>
+    <result column="school_name" javaType="java.lang.String" property="schoolName"></result>
+    <result column="user_id" javaType="java.lang.Integer" property="userId"></result>
+    <result column="sign_time" javaType="java.lang.Long" property="signTime"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sign_id, sign_time, student_id, longitude, latitude, flag
+  </sql>
+  <select id="selectById" resultType="map" parameterType="java.lang.Integer" >
+    SELECT user.name FROM sign_in si
+    LEFT JOIN sign_detail sd ON si.id=sd.sign_id
+    LEFT JOIN user ON user.id=sd.student_id
+    where 1 =1 AND  sd.sign_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectSignDetailById" resultMap="returnMap" parameterType="java.util.HashMap">
+    select sd.id,sd.sign_time,sd.latitude,sd.longitude,sd.flag,u.id as user_id,u.name,u.phone,school.school_name,co.college_name
+    from sign_detail sd
+    left JOIN sign_in s on sd.sign_id = s.id
+    LEFT JOIN user u on u.id = sd.student_id
+    LEFT JOIN college co on co.id = u.college_id
+    LEFT JOIN school on school.id = co.school_id
+    WHERE sd.id > 0
+    <if test="signId">
+      AND s.id = #{signId}
+    </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,14 @@
+<div>
+  <nz-select style="width: 240px;" [(ngModel)]="selectedType">
+    <nz-option *ngFor="let i of types" [nzValue]="i" [nzLabel]="i">
+    </nz-option>
+  </nz-select>
+</div>
+
+<ul class="anticons-list">
+  <li *ngFor="let ii of icons[selectedType]" (click)="selectIcon(ii)">
+    <i style="font-size: 24px;" class="anticon" nz-icon [nzType]="ii" nzTheme="outline"></i>
+    <span class="anticon-class">{{ii}}</span>
+  </li>
+</ul>
+

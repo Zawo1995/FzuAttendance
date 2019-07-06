@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CourseMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Course" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+    <result column="start_week" property="startWeek" jdbcType="INTEGER" />
+    <result column="end_week" property="endWeek" jdbcType="INTEGER" />
+    <result column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="course_open_time" property="courseOpenTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="selectResult" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="teacher_name" javaType="java.lang.String" property="teacherName"></result>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, course_name, start_week, end_week, teacher_id, course_open_time
+  </sql>
+  <select id="selectAllCourse" resultMap="selectResult" parameterType="com.model.courdsdto.CourseQuery">
+    SELECT c.id, c.course_name, c.start_week, c.end_week, c.teacher_id, c.course_open_time,
+            u.name as teacher_name
+    FROM course c
+    LEFT JOIN user u ON c.teacher_id = u.id
+    where c.id != 0
+    <if test="courseName != null">
+      AND c.course_name LIKE "%"#{courseName}"%"
+    </if>
+    <if test="id != null">
+      AND c.id = #{id}
+    </if>
+    <if test="teacherId != null">
+      AND c.teacher_id =  #{teacherId}
+    </if>
+    <if test="teacherName != null">
+      AND u.name LIKE "%"#{teacherName}"%"
+    </if>
+    <if test="startWeek != null">
+      AND c.start_week >= #{startWeek}
+    </if>
+    <if test="endWeek != null">
+      AND c.end_week &lt;= #{endWeek}
+    </if>
+    <if test="firstOpenTime != null">
+      AND c.course_open_time >= #{firstOpenTime}
+    </if>
+    <if test="secondOpenTime != null">
+      AND c.course_open_time &lt;= #{secondOpenTime}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,93 @@
+<div class="panel panel-default panelManager">
+  <div class="panel-body">
+
+    <nz-input-group nzCompact>
+      <nz-select style="width: 120px;" nzPlaceHolder="请选择" [(ngModel)]="searchName">
+        <nz-option nzValue="name" nzLabel="名称"></nz-option>
+      </nz-select>
+      <input [readonly]="searchName == null" type="text" nz-input placeholder="请输入" style="width:25%"
+             [(ngModel)]="searchValue"/>
+      <button nz-button nzType="primary" nzSize="default" nzSearch (click)="queryList()">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+      </button>
+      <button nz-button (click)="refresh()">
+        <i nz-icon nzType="sync" nzTheme="outline"></i>
+      </button>
+      <div *ngIf="searchRoleType==0" style="float:right">
+        <button nz-button nzType="primary" nzSize="default" (click)="addRole(template)"> 新增</button>
+        &nbsp;&nbsp;&nbsp;
+        <button [nzLoading]="buttonLoading" nz-button nzType="danger" nzSize="default" (click)="deleteRoles()">批量删除
+        </button>
+      </div>
+    </nz-input-group>
+
+
+    <hr/>
+
+    <nz-tabset>
+      <nz-tab nzTitle="系统默认角色" (nzClick)="toggleType(1)"></nz-tab>
+      <nz-tab nzTitle="自定义角色" (nzClick)="toggleType(0)"></nz-tab>
+    </nz-tabset>
+    <nz-table #rowSelectionTable
+              nzShowPagination
+              nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+              [nzLoading]="loading">
+      <thead>
+      <tr>
+        <th nzShowCheckbox (nzCheckedChange)="checkAll($event)" [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate" nzWidth="80px"></th>
+        <th></th>
+        <th nzShowSort (nzSortChange)="sort('name',$event)" nzWidth="120px">角色名</th>
+        <th>备注</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let i of rowSelectionTable.data| orderBy:orderByArray">
+        <td *ngIf="i.id != 0" nzShowCheckbox [(nzChecked)]="mapOfCheckedId[i.id]"
+            (nzCheckedChange)="refreshStatus()"></td>
+        <td *ngIf="i.id == 0" [(nzChecked)]="mapOfCheckedId[i.id]" (nzCheckedChange)="refreshStatus()"></td>
+        <td>
+          <nz-avatar [nzText]="RoleColor[i.name] != null?RoleColor[i.name].abbr:i.name"
+                     nzShape="square"
+                     [ngStyle]="{'background-color':RoleColor[i.name] != null?RoleColor[i.name].color:'black'}">
+          </nz-avatar>
+        </td>
+        <td>{{i.name}}</td>
+        <td>{{i.remark}}</td>
+        <td>
+          <a (click)="editRole(i)">编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteRole(false, i.id)" *ngIf="i.id > 0">删除</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <nz-dropdown *ngIf="searchRoleType==0">
+            <a nz-dropdown> 更多 <i nz-icon type="down"></i> </a>
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item>
+                <a (click)="actionSetting(i)">权限设置</a>
+              </li>
+            </ul>
+          </nz-dropdown>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <ng-template #template let-notification>
+    <div class="ant-notification-notice-content">
+      <div>
+        <div class="ant-notification-notice-message">提示</div>
+        <div class="ant-notification-notice-description">
+          您刚刚新增了一个角色信息，请问需要为其设置权限吗？
+        </div>
+        <span class="ant-notification-notice-btn">
+            <button nz-button nzType="primary" nzSize="small"
+                    (click)="notification.close();actionSetting(newAddRoleId)">
+              <span>确定</span>
+            </button>
+          </span>
+      </div>
+    </div>
+  </ng-template>
+</div>

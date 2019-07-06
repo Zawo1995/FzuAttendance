@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.model.Menu">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="code" jdbcType="VARCHAR" property="code"/>
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
+    <result column="icon" jdbcType="VARCHAR" property="icon"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="order" jdbcType="INTEGER" property="order"/>
+  </resultMap>
+  <resultMap id="returnMap" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="role_id" javaType="java.lang.Integer" property="roleId"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, code, parent_id, icon, url, order
+  </sql>
+  <select id="selectAllMenu" resultMap="returnMap" parameterType="com.model.menudto.MenuQuery">
+    SELECT DISTINCT m.id,m.name,m.code,m.parent_id,m.icon,m.url,m.order
+    FROM menu m
+    LEFT JOIN role_menu on role_menu.menu_id = m.id
+    WHERE menu_id IS NOT NULL
+    <if test="roleId != null">
+      AND role_menu.role_id = #{roleId}
+      AND role_menu.enable = 1
+    </if>
+    ORDER BY m.order
+  </select>
+</mapper>

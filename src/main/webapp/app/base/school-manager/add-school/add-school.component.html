@@ -1,0 +1,38 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">学校名称</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入学校名称" formControlName="schoolName"/>
+      <nz-form-explain *ngIf="validateForm.get('schoolName')?.dirty && validateForm.get('schoolName')?.errors">
+        请输入学校名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">学校地址</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input placeholder="请输入学校地址" formControlName="schoolAddress"/>
+      <nz-form-explain *ngIf="validateForm.get('schoolAddress')?.dirty && validateForm.get('schoolAddress')?.errors">
+        请输入学校名称
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="4">备注</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="schoolDetail" nz-input rows="2" placeholder></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="4">
+      <button [nzLoading]="buttonLoading" nz-button nzType="primary">提交</button>
+      <button nz-button (click)="resetForm($event)">重置</button>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</form>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.StudentCourseMapper">
+  <resultMap id="BaseResultMap" type="com.model.StudentCourse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="course_id" jdbcType="INTEGER" property="courseId" />
+    <result column="sick_count" jdbcType="INTEGER" property="sickCount" />
+    <result column="think_count" jdbcType="INTEGER" property="thinkCount" />
+    <result column="late_count" jdbcType="INTEGER" property="lateCount" />
+    <result column="early_count" jdbcType="INTEGER" property="earlyCount" />
+    <result column="absenteeism" jdbcType="INTEGER" property="absenteeism" />
+    <result column="ordinary_grade" jdbcType="REAL" property="ordinaryGrade" />
+    <result column="exam_grade" jdbcType="REAL" property="examGrade" />
+    <result column="final_grade" jdbcType="REAL" property="finalGrade" />
+  </resultMap>
+  <resultMap id="returnMap" type="java.util.HashMap" extends="BaseResultMap">
+    <result column="student_id" javaType="java.lang.Integer" property="studentId"></result>
+    <result column="course_id" javaType="java.lang.Integer" property="courseId"></result>
+    <result column="college_name" javaType="java.lang.String" property="collegeName"></result>
+    <result column="school_name" javaType="java.lang.String" property="schoolName"></result>
+    <result column="phone" javaType="java.lang.String" property="phone"></result>
+    <result column="collge_id" javaType="java.lang.Integer" property="collgeId"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, student_id, course_id, sick_count, think_count, late_count, early_count, absenteeism,
+    ordinary_grade, exam_grade, final_grade
+  </sql>
+  <select id="selectAllStudentCourse" resultMap="returnMap" parameterType="java.util.HashMap">
+    select sc.student_id,sc.course_id,u.id,u.name,u.phone,u.college_id,co.college_name,school.school_name
+    from student_course sc
+    LEFT JOIN user u on u.id = sc.student_id
+    LEFT JOIN course c on c.id = sc.course_id
+    LEFT JOIN college co on co.id = u.college_id
+    LEFT JOIN school on school.id = co.school_id
+    WHERE sc.id > 0
+    <if test="studentId != null">
+      AND student_id = #{studentId}
+    </if>
+    <if test="courseId != null">
+      AND course_id = #{courseId}
+    </if>
+    <if test="name != null">
+      AND name = #{name}
+    </if>
+  </select>
+</mapper>

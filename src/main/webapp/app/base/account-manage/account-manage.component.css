@@ -1,0 +1,22 @@
+.operate-action a{
+  float:right;
+  margin-left: 8px;
+  margin-top: 50px;
+}
+
+.ant-card-body{
+  padding-bottom: 10px;
+}
+
+nz-spin {
+  display: inline-block;
+}
+
+.spining{
+  text-align: center;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
